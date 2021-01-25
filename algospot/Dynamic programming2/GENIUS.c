@@ -7,7 +7,7 @@ int sing[50];
 int favorite[50];
 double probability[50][50];
 double c[200];
-double w[200][200];
+double w[200][200]; // 배열 크기를 잡을 때 주의하자.
 double store[2][200][200];
 double answer[50][50];
 
@@ -35,12 +35,13 @@ void powCal(int num){
 			double temp = 0.0;
 			for(int c=0; c<4*n; c++)
 				temp += store[(num+1)%2][a][c] * store[(num+1)%2][c][b];
-			store[num][a][b] = temp;
+			store[num][a][b] = temp; // 행렬 곱을 계산할 때는 결과 값을 다른 배열에 저장해 주어야 한다.
 		}
 	}
 }
 
 void powMatrix(){
+	// for문으로 행렬곱을 수행하여 메모리 부하를 줄이고, 속도를 높였다.
 	for(int i=size-1; i > -1; i--){
 		if(i == size-1){
 			for(int a=0; a<4*n; a++){
@@ -140,7 +141,7 @@ int main(){
 			scanf("%d", &favorite[j]);
 		
 		
-		memset(c, 0.0, sizeof(c));
+		memset(c, 0.0, sizeof(c)); // memset은 double을 초기화할때도 사용할 수 있다.
 		memset(w, 0.0, sizeof(w));
 		memset(store, 0.0, sizeof(store));
 		memset(binary, -1, sizeof(binary));
