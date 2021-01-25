@@ -7,35 +7,64 @@ int sing[50];
 int favorite[50];
 double probability[50][50];
 double c[200];
-double ** w;
+double w[200][200];
+double store[2][200][200];
 double answer[50][50];
 
-double ** powCal(double ** arr1, double ** arr2){
-	double ** cal;
-	cal = (double **)malloc(sizeof(double *) * 4 * n);
-	for(int i=0; i<4*n; i++)
-		cal[i] = (double *)malloc(sizeof(double) * 4 * n);
+int binary[100];
+int size;
+
+void calBinary(int num){
+	size = 0;
 	
+	while(num > 1){
+		if(num % 2 == 0){
+			binary[size++] = 0;
+			num /= 2;
+		}
+		else{
+			binary[size++] = 1;
+			num--;
+		}
+	}
+}
+
+void powCal(int num){
 	for(int a=0; a<4*n; a++){
 		for(int b=0; b<4*n; b++){
 			double temp = 0.0;
 			for(int c=0; c<4*n; c++)
-				temp += arr1[a][c] * arr2[c][b];
-			cal[a][b] = temp;
+				temp += store[(num+1)%2][a][c] * store[(num+1)%2][c][b];
+			store[num][a][b] = temp;
 		}
 	}
-	
-	return cal;
 }
 
-double ** powMatrix(int num){
-	if(num == 1)
-		return w;
-
-	if(num % 2 == 0)
-		return powCal(powMatrix(num/2), powMatrix(num/2));
-	else
-		return powCal(w, powMatrix(num-1));
+void powMatrix(){
+	for(int i=size-1; i > -1; i--){
+		if(i == size-1){
+			for(int a=0; a<4*n; a++){
+				for(int b=0; b<4*n; b++){
+					double temp = 0.0;
+					for(int c=0; c<4*n; c++)
+						temp += w[a][c] * w[c][b];
+					store[i%2][a][b] = temp;
+				}
+			}
+		}
+		else if(!binary[i]){
+			powCal(i%2);
+		}else{
+			for(int a=0; a<4*n; a++){
+				for(int b=0; b<4*n; b++){
+					double temp = 0.0;
+					for(int c=0; c<4*n; c++)
+						temp += w[a][c] * store[(i+1)%2][c][b];
+					store[i%2][a][b] = temp;
+				}
+			}
+		}	
+	}
 }
 
 void firstStart(){
@@ -57,21 +86,39 @@ void calGenius(int caseNum){
 	for(int i=0; i<n; i++)
 		for(int j=0; j<n; j++)
 			w[3*n + i][n*(4-sing[j]) + j] = probability[j][i];
-
-	w = powMatrix(k-3);
 	
-	double cAnswer[200];
-	memset(cAnswer, 0.0, sizeof(cAnswer));
-	for(int i=0; i<4*n; i++){
-		double temp = 0.0;
-		for(int j=0; j<4*n; j++)
-			temp += w[i][j] * c[j];
-		cAnswer[i] = temp;
+	if(k >= 4){
+		double cAnswer[200];
+		memset(cAnswer, 0.0, sizeof(cAnswer));
+		if(k > 4){
+			calBinary(k-3);
+			powMatrix();
+	
+			for(int i=0; i<4*n; i++){
+				double temp = 0.0;
+				for(int j=0; j<4*n; j++)
+					temp += store[0][i][j] * c[j];
+				cAnswer[i] = temp;
+			}
+		}else{
+			for(int i=0; i<4*n; i++){
+				double temp = 0.0;
+				for(int j=0; j<4*n; j++)
+					temp += w[i][j] * c[j];
+				cAnswer[i] = temp;
+			}	
+		}
+		
+		for(int i=0; i<m; i++)
+			for(int j=0; j<sing[favorite[i]]; j++)
+				answer[caseNum][i] += cAnswer[n*(3-j) + favorite[i]];
 	}
-	
-	for(int i=0; i<m; i++)
-		for(int j=0; j<sing[favorite[i]]; j++)
-			answer[caseNum][i] += cAnswer[n*(3-j) + favorite[i]];
+	else{
+		for(int i=0; i<m; i++){
+			for(int j=0; j<sing[favorite[i]]; j++)
+				answer[caseNum][i] += c[n*(3-j) + favorite[i]];
+		}	
+	}
 }
 
 int main(){
@@ -92,23 +139,21 @@ int main(){
 		for(int j=0; j<m; j++)
 			scanf("%d", &favorite[j]);
 		
-		w = (double **)malloc(sizeof(double *) * 4 * n);
-		for(int j=0; j<4*n; j++)
-			w[j] = (double *)malloc(sizeof(double) * 4 * n);
-		
-		for(int a=0; a<4*n; a++)
-			for(int b=0; b<4*n; b++)
-				w[a][b] = 0.0;
 		
 		memset(c, 0.0, sizeof(c));
+		memset(w, 0.0, sizeof(w));
+		memset(store, 0.0, sizeof(store));
+		memset(binary, -1, sizeof(binary));
 		
 		calGenius(i);
 		
 		for(int j=0; j<m; j++)
-			printf("%lf ", answer[i][j]);
+			printf("%.8lf ", answer[i][j]);
 		printf("\n");
 	}
-		
+	
 	return 0;
-}	
+}
+
+
 
