@@ -1,9 +1,10 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-#define min -1e200
+#define min -1e200 // 음의 무한대에 가까운 수
 
 int m, q;
 char word[502][10];
@@ -20,7 +21,7 @@ int answer[102];
 void init(){
 	for(int i=0; i<102; i++)
 		for(int j=0; j<502; j++)
-			cache[i][j] = 1.0;
+			cache[i][j] = 1.0; // 저장될 값에 따라 초기화 값 조정이 달라진다는 것에 주의
 }
 
 double log(double prob){
@@ -61,7 +62,6 @@ void reconstruct(int last, int index){
 	reconstruct(choice[index][last], index+1);
 }
 
-// getchar 사용
 int main(){
 	
 	scanf("%d%d", &m, &q);
@@ -71,7 +71,7 @@ int main(){
 		
 	for(int i=0; i<m; i++){
 		scanf("%lf", &firstProb[i]);		
-		firstProb[i] = log(firstProb[i]);
+		firstProb[i] = log(firstProb[i]); // 확률을 계속 곱하다 보면 언더플로우가 발생할 수 있기 때문에 로그값으로 변환하여 계산
 	}
 	
 	for(int i=0; i<m; i++){
@@ -124,3 +124,4 @@ int main(){
 		
 	return 0;
 }
+
