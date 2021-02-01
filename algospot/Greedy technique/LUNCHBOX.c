@@ -61,7 +61,6 @@ int main(){
 	int caseNum;
 	scanf("%d", &caseNum);
 	
-	int answer;
 	for(int i=0; i<caseNum; i++){
 		
 		scanf("%d", &num);
@@ -73,8 +72,7 @@ int main(){
 			scanf("%d", &lunch[j].e);
 		
 		mergeSort(lunch, 0, num-1);
-		answer = lunchBox();
-		printf("%d\n", answer);
+		printf("%d\n", lunchBox());
 	}
 	
 	return 0;
