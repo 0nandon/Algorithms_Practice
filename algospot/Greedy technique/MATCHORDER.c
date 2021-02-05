@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 int num;
 
@@ -76,8 +75,6 @@ int main(){
 	int caseNum;
 	scanf("%d", &caseNum);
 	int answer[caseNum];
-	
-	srand(time(NULL));
 
 	for(int i=0; i<caseNum; i++){
 		scanf("%d", &num);
