@@ -42,11 +42,11 @@ void merge(RADIAN arr[], int start, int half, int end){
 
 // 병합정렬 구현 소스
 void mergeSort(RADIAN arr[], int start, int end){
-    if(start != end){
-	    int half = (end-start)/2;
-	    mergeSort(arr, start, start+half);
-        mergeSort(arr, start+half+1, end);
-        merge(arr, start, half, end);
+    	if(start != end){
+	    	int half = (end-start)/2;
+	    	mergeSort(arr, start, start+half);
+            	mergeSort(arr, start+half+1, end);
+            	merge(arr, start, half, end);
 	}
 }
 
