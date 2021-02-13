@@ -13,10 +13,8 @@ int h, w, r, c;
 char board[11][11];
 char piece[11][11];
 
-POINT point[410][101];
-int num = 4;
+POINT point[4][101];
 int pointNum = 0;
-int start = 0;
 
 //병합 정렬 소스
 void merge(POINT arr[], int start, int half, int end){
@@ -62,10 +60,8 @@ void eliminateSame(){
 				for(a = 0; a<pointNum; a++)
 					if(point[i][a].num != point[j][a].num)
 						break;
-				if(a == pointNum){
+				if(a == pointNum)
 					point[j][0].same = 1;
-					num--;
-				}
 			}
 		}
 	}
@@ -80,7 +76,6 @@ void rotate(){
 		for(int j=0; j<pointNum; j++){
 			if(i % 2)
 				point[i][j].y += r-1;
-			
 			else
 				point[i][j].y += c-1;
 			point[i][j].num = 10 * point[i][j].x + point[i][j].y;
@@ -104,82 +99,76 @@ void generateRotations(){
 	
 	rotate();
 	eliminateSame();
-	
-	/*
-	printf("\n");
-	for(int i=0; i<4; i++){
-		if(point[i][0].same)
-			continue;
-		for(int j=0; j<pointNum; j++)
-			printf("(%d, %d) %d  /  ", point[i][j].x, point[i][j].y, point[i][j].num);
-		printf("\n");
-	}
-	*/	
 }
 
-void makeCover(){
-	int r_t, c_t, temp;
+int isSet(int num, int x, int y, int ret){
+	int add1 = x - point[num][0].x;
+	int add2 = y - point[num][0].y;
 	
-	r_t = c; c_t = r;
-	for(int i=0; i<4; i++){
-		temp = r_t;
-		r_t = c_t;
-		c_t = temp;
-		
-		if(point[i][0].same)
-			continue;
-		
-		for(int a=0; a<h-r_t+1; a++){
-			for(int b=0; b<w-c_t+1; b++){
-				int c;
-				for(c=0; c<pointNum; c++)
-					if(board[point[i][c].x + a][point[i][c].y + b] == '#')
-						break;
-
-				if(c == pointNum){
-					for(c=0; c<pointNum; c++){
-						point[num][c].x = point[i][c].x + a;
-						point[num][c].y = point[i][c].y + b;
-					}
-					num++;
-				}
-			}
+	if(ret){
+		int i;
+		for(i=0; i<pointNum; i++){
+			int xBool = ((point[num][i].x + add1 < 0) || (point[num][i].x + add1 >= h));
+			int yBool = ((point[num][i].y + add2 < 0) || (point[num][i].y + add2 >= w));
+			
+			if(xBool || yBool)
+				return 0;
+			
+			if(board[point[num][i].x + add1][point[num][i].y + add2] == '#')
+				return 0;
 		}
+		
+		for(int i=0; i<pointNum; i++)
+			board[point[num][i].x + add1][point[num][i].y + add2] = '#';
+		
+		return 1;
 	}
+	else
+		for(int i=0; i<pointNum; i++)
+			board[point[num][i].x + add1][point[num][i].y + add2] = '.';
 }
-
 
 int max = 0;
-void boardCover(int next, int ans, int empty){
+void boardCover(int ans, int empty){
 	if((empty / pointNum) + ans <= max)
 		return;
 	
-	int cnt = 0;
-	for(int i=next; i<num; i++){
-		int j;
-		for(j=0; j<pointNum; j++)
-			if(board[point[i][j].x][point[i][j].y] == '#')
-				break;
-	    
-		if(j == pointNum){
-			cnt++;
-			for(j = 0; j<pointNum; j++)
-				board[point[i][j].x][point[i][j].y] = '#';
-			
-			boardCover(i+1, ans+1, empty-pointNum);
-			
-			for(j = 0; j<pointNum; j++)
-				board[point[i][j].x][point[i][j].y] = '.';
+	int x = -1, y = -1;
+	for(int i=0; i<h; i++){
+		for(int j=0; j<w; j++){
+			if(board[i][j] == '.'){
+				x = i; y = j;
+				goto HERE;
+			}
 		}
 	}
-		
-	if(!cnt)
-		max = ans > max ? ans : max;
 	
+	if(x == -1){
+		max = ans > max ? ans : max;
+		return;
+	}
+	
+	HERE:
+	for(int i=0; i<4; i++){
+		if(point[i][0].same)
+			continue;
+		
+		if(isSet(i, x, y, 1)){
+			boardCover(ans+1, empty-pointNum);
+			
+			isSet(i, x, y, 0);
+		}
+	}
+	
+	board[x][y] = '#';
+	boardCover(ans, empty-1);
+	board[x][y] = '.';
+
 	return;
 }
 
 int main(){
+	
 	int caseNum;
 	scanf("%d", &caseNum);
 	
@@ -193,22 +182,9 @@ int main(){
 			scanf("%s", piece[j]);
 		
 		pointNum = 0;
-		num = 4;
 		max = 0;
 		
 		generateRotations();
-		start = num;
-		// printf("%d\n", num);
-		makeCover();
-		// printf("%d\n", num);
-		
-		/*
-		for(int i=start; i<num; i++){
-			for(int j=0; j<pointNum; j++)
-				printf("(%d, %d) %d\n", point[i][j].x, point[i][j].y);
-			printf("\n");
-		}
-		*/
 		
 		int empty = 0;
 		for(int i=0; i<h; i++)
@@ -216,7 +192,7 @@ int main(){
 				if(board[i][j] == '.')
 					empty++;
 		
-		boardCover(start, 0, empty);
+		boardCover(0, empty);
 		printf("%d\n", max);
 	}
 		
