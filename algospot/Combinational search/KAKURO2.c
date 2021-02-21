@@ -89,7 +89,7 @@ void printSolution(){
 	}
 }
 
-// 조합 탐
+// 조합 탐색 시행
 int search(){
 	int x = -1, y = -1, minCands = 1023;
 	for(int i = 0; i<n; i++){
