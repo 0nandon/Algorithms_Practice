@@ -3,14 +3,15 @@
 #include <string.h>
 
 int n, q;
-int board[20][20];
+int board[20][20]; // 카쿠로 게임판
 
-int hint[20][20][2];
-int value[20][20];
-int sum[20 * 20];
-int length[20 * 20];
-int known[20 * 20];
+int hint[20][20][2]; // 각 좌표가 속해 있는 힌트의 인덱스
+int value[20][20]; // 카쿠로 게임판에 넣은 숫자 값
+int sum[20 * 20]; // 각 힌트가 만족해야 하는 숫자 합
+int length[20 * 20]; // 각 힌트를 이루고 있는 흰 칸들의 길이
+int known[20 * 20]; // 각 힌트를 채우고 있는 숫자들의 집합
 
+// num을 이진수로 나타냈을 때 1의 개수를 반환
 int getSize(int num){
 	int size=0;
 	
@@ -22,7 +23,8 @@ int getSize(int num){
 	
 	return size;
 }
-	
+
+// num을 이루고 있는 1의 index의 합을 반환 (1 ~ 9)
 int getSum(int num){
 	int s = 0;
 	for(int i=1; i<10; i++)
@@ -32,6 +34,10 @@ int getSum(int num){
 	return s;
 }
 
+// candidates[len][sum][known]
+// len : 연속된 흰색의 길이
+// sum : 연속된 흰색의 합
+// known : 힌트 칸에 해당하는 흰 칸에 쓰인 숫자들의 집합
 int candidates[10][46][1024];
 void generateCandidates(){
 	memset(candidates, 0, sizeof(candidates));
@@ -61,10 +67,12 @@ void push(int x, int y, int val){
 	value[x][y] = 0;
 }
 
+// 힌트를 입력했을 때, 그 힌트의 후보 집합을 비트마스크를 활용하여 집합
 int getCandHint(int hint){
 	return candidates[length[hint]][sum[hint]][known[hint]];
 }
 
+// 좌표를 입력했을 때, 그 좌표가 속해있는 두 힌트의 후보들의 교집합을 반환
 int getCandCoord(int x, int y){
 	return getCandHint(hint[x][y][0]) & getCandHint(hint[x][y][1]);
 }
@@ -81,6 +89,7 @@ void printSolution(){
 	}
 }
 
+// 조합 탐
 int search(){
 	int x = -1, y = -1, minCands = 1023;
 	for(int i = 0; i<n; i++){
