@@ -124,11 +124,11 @@ int main(){
 		scanf("%d", &n);
 		
 		memset(board, 0, sizeof(board));
-    memset(value, 0, sizeof(value));
-    memset(hint, 0, sizeof(hint));
-    memset(sum, 0, sizeof(sum));
-    memset(length, 0, sizeof(length));
-    memset(known, 0, sizeof(known));
+    		memset(value, 0, sizeof(value));
+    		memset(hint, 0, sizeof(hint));
+    		memset(sum, 0, sizeof(sum));
+    		memset(length, 0, sizeof(length));
+    		memset(known, 0, sizeof(known));
 		
 		for(int j=0; j<n; j++)
 			for(int a=0; a<n; a++)
