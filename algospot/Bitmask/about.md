@@ -21,11 +21,19 @@ if(toppings & (1 << p))
 ```
 #### 1-4 원소의 삭제
 ```c
-toppings &= ~(1 << p)
+toppings &= ~(1 << p);
 ```
 #### 1-5 원소의 토글
 ```c
-toppings ^= (1 << p)
+toppings ^= (1 << p);
+```
+#### 1-6 최소 원소의 지수 구하기
+```c
+int firstToppings = (toppings & -toppings);
+```
+#### 1-7 최소 원소 지우기
+```c
+toppings &= (toppings - 1);
 ```
 
 
