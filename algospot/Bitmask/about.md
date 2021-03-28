@@ -35,5 +35,11 @@ int firstToppings = (toppings & -toppings);
 ```c
 toppings &= (toppings - 1);
 ```
+#### 1-8 모든 부분 집합 순회하기
+```c
+for(int subset = pizza; subset; subset = ((subset - 1) & pizza)){
+  int i;
+}
+```
 
 
