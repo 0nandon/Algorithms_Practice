@@ -27,7 +27,7 @@ int bitCount(int num){
         num /= 2;
     }
     
-    return cnt;
+    return cnt-1;
 }
 
 int graduation(int semester, int subject, int count){
