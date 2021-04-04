@@ -4,7 +4,7 @@
 #define MOD 20091101;
 
 int N, K;
-long long int mod[100001]; // christmas1()를 계산할 때, 오버플로우를 피하기 위해 64비트 정수형을 
+long long int mod[100001]; // christmas1()를 계산할 때, 오버플로우를 피하기 위해 64비트 정수형을 사용한다.
 int sum[100001];
 
 int christmas1(){
