@@ -12,12 +12,13 @@
 ```c
 if(size == capacity){
   int newCapacity = capacity + M;
-  int * newArray = (int*)malloc(sizeof(int * newCapacity))
+  int * newArray = (int*)malloc(sizeof(int) * newCapacity);
   
   for(int i=0; i<capacity; i++)
     newArray[i] = array[i];
 }
 ```
-
+위 코드는 상수시간에 append() 연산을 수행하다가, 배열의 크기가 꽉차는 순간,
+배열의 크기에 비례하는 시간복잡도를 가닌 resize()연산을 하는 코드이다.
 
 
