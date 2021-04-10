@@ -7,5 +7,17 @@
 * 배열의 크기를 변경하는 resize() 연산이 가능하다. 이 동작을 수행하는 데는 배열의 크기 N에 비례하는 시간이 걸린다.
 * 주어진 원소를 배열의 맨 끝에 추가함으로써 크기를 1 늘리는 append() 연산을 지원한다. 이 동작을 수행하는 데는 상수시간이 걸린다.
 
+### 동적배열의 재할당 전략
+아래 코드를 보자.
+```c
+if(size == capacity){
+  int newCapacity = capacity + M;
+  int * newArray = (int*)malloc(sizeof(int * newCapacity))
+  
+  for(int i=0; i<capacity; i++)
+    newArray[i] = array[i];
+}
+```
+
 
 
