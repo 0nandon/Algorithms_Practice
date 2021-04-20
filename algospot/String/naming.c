@@ -2,40 +2,37 @@
 #include <stdlib.h>
 #include <string.h>
 
-int partial[400001];
-int answer[400001];
+int partial[400002];
+int answer[400002];
 int sort = 0;
 
-int naming(char str[400001]){
+int naming(char str[400002]){
     int length = strlen(str);
     answer[sort++] = length;
     
     int start = 1, ret = 0;
     while(start < length){
         int cnt = 0;
-        while(str[start + cnt] == str[cnt] && start + cnt <= length-1){
+        while(str[start + ret + cnt] == str[ret + cnt] && start + ret + cnt <= length-1){
             cnt++;
-            partial[start + cnt] = cnt + ret > partial[start + cnt] ? cnt + ret : partial[start + cnt];
+            partial[start + cnt + ret] = ret + cnt;
         }
         
-        if(start + cnt == length){
-            answer[sort++] = cnt;
+        if(ret + cnt > 0){
+            if(start + ret + cnt == length)
+                answer[sort++] = ret + cnt;
+            start = start + ret + cnt - partial[ret + cnt];
+            ret = partial[ret + cnt];
+        }else{
             start++;
             ret = 0;
-        }else if(cnt){
-            start = start + cnt;
-            ret = partial[cnt];
-        }
-        else{
-            start++;
-            ret = partial[cnt];
         }
     }
 }
 
 int main() {
-	char s1[400001];
-    char s2[400001];
+    char s1[400002];
+    char s2[400002];
     
     scanf("%s%s", s1, s2);
     
@@ -47,5 +44,5 @@ int main() {
     for(int i=sort-1; i > -1; i--)
         printf("%d ", answer[i]);
     
-	return 0;
+    return 0;
 }
