@@ -18,7 +18,7 @@ void traversal(int p1, int p2, int i1, int i2){
 }
 
 int main() {
-	int caseNum;
+    int caseNum;
     scanf("%d", &caseNum);
     
     for(int i=0; i<caseNum; i++){
