@@ -93,11 +93,11 @@ void makeCycleLink(int there){
 		cycleNum[there] = newInCycle;
 		
 		CYCLE * newCycle = (CYCLE*)malloc(sizeof(CYCLE));
-	    newCycle->data = stack->link->cycle;
+	    	newCycle->data = stack->link->cycle;
 		newCycle->check = 0;
-	    newCycle->link = NULL;
-	    cycleNum[there]->link = newCycle;
-	    cycleNum[there]->data++;
+	    	newCycle->link = NULL;
+	    	cycleNum[there]->link = newCycle;
+	    	cycleNum[there]->data++;
 
 		ptrC[there] = cycleNum[there]->link;
 		return;
@@ -143,9 +143,9 @@ void dfs(int there){
 	while(1){
 		ret = stackDFS->link->index;
 		if(stack->link != NULL && stack->link->startEdge == ret){
-		    makeCycleLink(ret);
+		    	makeCycleLink(ret);
 			popStack();
-	    }
+	    	}
         
 		EDGE * ptrE = graph[ret]->link;
 		for(i = 0; i<graph[ret]->index; i++){
@@ -167,16 +167,16 @@ void dfs(int there){
 		else{
 			if(visited[ret]){
 				if(!backT[ret]) backT[ret] = back;
-			    back = 0; 
+			    	back = 0; 
 			}
 			
 			temp = ptrE->index;
-		    ptrE->index = -1;
+		   	ptrE->index = -1;
 			
 			if(visited[temp] && check[temp]){
 				back = 1;
 				pushStack(temp);
-			    cycle++;
+			    	cycle++;
 			}
 			else if(!visited[temp]){
 				pushStackDFS(temp);
@@ -198,7 +198,7 @@ void goBack(int isCycle[], int sortArr[], int start){
     CYCLE * ptr_t = cycleNum[sortArr[start]]->link;
 	for(int i = 0; i<cycleNum[sortArr[start]]->data; i++){
 		if(ptr_t->check){
-		    isCycle[ptr_t->data] = 0;
+		    	isCycle[ptr_t->data] = 0;
 			ptr_t->check = 0;
 		}
 		ptr_t = ptr_t->link;
@@ -214,7 +214,7 @@ int eliminateCycle(int sortArr[], int isCycle[], int start, int length){
 	CYCLE * ptr_t = cycleNum[sortArr[start]]->link;
 	for(int i = 0; i<cycleNum[sortArr[start]]->data; i++){
 		if(!isCycle[ptr_t->data]){
-		    isCycle[ptr_t->data] = 1;
+		    	isCycle[ptr_t->data] = 1;
 			ptr_t->check = 1;
 			cycle--;
 			ret = 1;
@@ -244,7 +244,7 @@ void destroyGraph(int nodeNum){
 		ptrE = graph[i]->link;
 		for(int j = 0; j<graph[i]->index; j++){
 			free(ptrE);
-		    ptrE = ptrE->link;
+		    	ptrE = ptrE->link;
 		}
 		free(graph[i]);
 	}
@@ -256,10 +256,10 @@ void destroyCycleNum(int nodeNum){
 		if(cycleNum[i] != NULL){
 			ptrT = cycleNum[i]->link;
 			for(int j = 0; j<cycleNum[i]->data; j++){
-			    free(ptrT);
-		        ptrT = ptrT->link;
-		    }
-		    free(cycleNum[i]);	
+			    	free(ptrT);
+		        	ptrT = ptrT->link;
+		    	}
+		    	free(cycleNum[i]);	
 		}
 	}
 }
