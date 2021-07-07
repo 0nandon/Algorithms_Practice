@@ -70,5 +70,5 @@ int main() {
     for(int i=0; i<11; i++)
         printf("%d ", sccId[i]);
 
-	return 0;
+    return 0;
 }
