@@ -119,6 +119,8 @@ int satSolve(){
         
         sccCount--;
     }
+    
+    return 1;
 }
 
 int main() {
