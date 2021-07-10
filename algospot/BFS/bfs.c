@@ -139,5 +139,5 @@ int main() {
     for(int i=0; i<9; i++)
         printf("%d ", distance[i]);
 
-	return 0;
+    return 0;
 }
