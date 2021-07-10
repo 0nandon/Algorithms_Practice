@@ -112,5 +112,5 @@ int main() {
     QUEUE * queue = bfs(0);
     free(queue);
 
-	  return 0;
+    return 0;
 }
