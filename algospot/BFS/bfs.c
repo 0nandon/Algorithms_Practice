@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+// adjacency metrics
 int graph[9][9] = {
     {0, 1, 0, 1, 1, 0, 0, 1, 0},
     {1, 0, 1, 1, 0, 0, 0, 0, 0},
@@ -13,8 +14,10 @@ int graph[9][9] = {
     {1, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 1, 0, 0},
 };
-int discovered[9];
-int visited[9];
+int discovered[9]; // 발견되었는지
+int visited[9]; // 방문했는지
+int distance[9]; // start부터 최단거리
+int parent[9]; // BFS spanning tree
 
 typedef struct node{
     int index;
@@ -81,11 +84,17 @@ int popQueue(QUEUE * queue){
     return ret;
 }
 
+// 일반적인 BFS 코드
+// BFS 탐색 결과, BFS spanning tree, start로 부터 최단거리 등을 계산
 QUEUE * bfs(int start){
     QUEUE * queue = createQueue();
     pushQueue(queue, start);
     discovered[start] = 1;
     
+    distance[start] = 0;
+    parent[start] = start;
+    
+    printf("BFS 탐색 결과 : ");
     while(queue->count != 0){
         int pop = popQueue(queue);
         visited[pop] = 1;
@@ -96,6 +105,9 @@ QUEUE * bfs(int start){
                 continue;
             if(visited[i] == 1 || discovered[i] == 1)
                 continue;
+            
+            distance[i] = distance[pop] + 1;
+            parent[i] = pop;
             
             pushQueue(queue, i);
             discovered[i] = 1;
@@ -108,9 +120,24 @@ QUEUE * bfs(int start){
 int main() {
     memset(discovered, -1, sizeof(discovered));
     memset(visited, -1, sizeof(visited));
+    memset(distance, -1, sizeof(distance));
+    memset(parent, -1, sizeof(parent));
     
+    // BFS 코드
     QUEUE * queue = bfs(0);
     free(queue);
+    printf("\n");
+    
+    // BFS spanning tree
+    printf("BFS spanning tree : ");
+    for(int i=0; i<9; i++)
+        printf("%d ", parent[i]);
+    printf("\n");
+    
+    // 최단거리
+    printf("최단거리 : ");
+    for(int i=0; i<9; i++)
+        printf("%d ", distance[i]);
 
-    return 0;
+	return 0;
 }
