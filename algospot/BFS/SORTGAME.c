@@ -132,7 +132,6 @@ void makeGraph(int array[8]){
 }
 
 void permutation(int array[8], int used, int index){
- 
     if(index == 8){
         makeGraph(array);
         return;
@@ -146,8 +145,6 @@ void permutation(int array[8], int used, int index){
     }
 }
 
-// 일반적인 BFS 코드
-// BFS 탐색 결과, BFS spanning tree, start로 부터 최단거리 등을 계산
 QUEUE * bfs(int start){
     QUEUE * queue = createQueue();
     pushQueue(queue, start);
