@@ -164,7 +164,7 @@ QUEUE * bfs(int start){
             discovered[there] = 1;
             pushQueue(queue, there, thereSum);
             
-	    // BFS spanning tree를 배열로 
+	    // BFS spanning tree를 배열로 표현 
             parent[there] = pop;
             choice[there] = d[i];
         }
