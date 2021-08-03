@@ -131,7 +131,6 @@ void changeList(char dString[10]){
     mergeSort(d, 0, dLength-1);
 }
 
-// 일반적인 BFS 코드
 QUEUE * bfs(int start){
     QUEUE * queue = createQueue();
     pushQueue(queue, start, 0);
@@ -165,6 +164,7 @@ QUEUE * bfs(int start){
             discovered[there] = 1;
             pushQueue(queue, there, thereSum);
             
+	    // BFS spanning tree를 배열로 
             parent[there] = pop;
             choice[there] = d[i];
         }
