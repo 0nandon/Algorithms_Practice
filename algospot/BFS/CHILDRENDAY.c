@@ -2,24 +2,23 @@
 #include <stdlib.h>
 #include <string.h>
 
-int discovered[10000]; // 발견되었는지
-int Bdiscovered[10000];
-int visited[10000]; // 방문했는지
-int Bvisited[10000];
-int distance[10000]; // start부터 최단거리
-int Bdistance[10000];
+int discovered[20000]; // 발견되었는지
+int visited[20000]; // 방문했는지
+int distance[20000]; // start부터 최단거리
+
+int parent[20000];
+int choice[20000];
+char string[20000];
 
 // input
 int n, m;
-int d[9];
+int d[10];
 int dLength;
 int answer;
 
 typedef struct node{
     int index;
     int sum;
-    char store[1000];
-    int storeLen;
     struct node * front;
     struct node * rear;
 }NODE;
@@ -30,15 +29,13 @@ typedef struct queue{
     struct node * rear;
 }QUEUE;
 
-NODE * createNode(int index, int sum, char store[1000], int storeLen){
+NODE * createNode(int index, int sum){
     NODE * newNode;
     newNode = (NODE*)malloc(sizeof(NODE));
     
     // input data
     newNode->index = index;
     newNode->sum = sum;
-    newNode->storeLen = storeLen;
-    strcpy(newNode->store, store);
     
     // link null
     newNode->front = NULL;
@@ -57,8 +54,8 @@ QUEUE * createQueue(){
     return queue;
 }
 
-void pushQueue(QUEUE * queue, int index, int sum, char store[1000], int storeLen){
-    NODE * newNode = createNode(index, sum, store, storeLen);
+void pushQueue(QUEUE * queue, int index, int sum){
+    NODE * newNode = createNode(index, sum);
     
     newNode->rear = queue->front;
     if(queue->count == 0)
@@ -92,114 +89,98 @@ NODE * popQueue(QUEUE * queue){
 void merge(int arr[], int start, int half, int end){
 	int temp[end-start+1];
 	for(int i = 0; i<end-start+1; i++)
-		temp[i] = arr[start+i];
+	    temp[i] = arr[start+i];
 	
 	int cnt = 0, left = 0, right = 0;
 	while(left < half+1 && right < end-start-half){
-		if(temp[left] > temp[half+1+right]){
-			arr[start+cnt] = temp[half+1+right]; 
-            right++; cnt++;
-        }
-		else{
-            arr[start+cnt] = temp[left]; 
-            left++; cnt++;
-        }
+	    if(temp[left] > temp[half+1+right]){
+		arr[start+cnt] = temp[half+1+right]; 
+                right++; cnt++;
+            }
+	    else{
+                arr[start+cnt] = temp[left]; 
+                left++; cnt++;
+            }
 	}
 	
 	if(left == half+1)
-		for(int i = 0; i<end-start-half-right; i++)
-			arr[start+cnt+i] = temp[half+1+right+i];
+	    for(int i = 0; i<end-start-half-right; i++)
+		arr[start+cnt+i] = temp[half+1+right+i];
 	else if(right == end-start-half)
-		for(int i = 0; i<half+1-left; i++)
-			arr[start+cnt+i] = temp[left+i];
+	    for(int i = 0; i<half+1-left; i++)
+		arr[start+cnt+i] = temp[left+i];
 }
 
 // 병합정렬 구현 소스
 void mergeSort(int arr[], int start, int end){
     if(start != end){
-	    int half = (end-start)/2;
-	    mergeSort(arr, start, start+half);
+	int half = (end-start)/2;
+	mergeSort(arr, start, start+half);
         mergeSort(arr, start+half+1, end);
         merge(arr, start, half, end);
-	}
+    }
 }
 
-void changeList(int num){
+void changeList(char dString[10]){
     memset(d, -1, sizeof(d));
+    dLength = strlen(dString);
     
-    int mod;
-    while(1){
-        mod = num % 10;
-        d[dLength++] = mod;
-        num /= 10;
-        
-        if(num == 0)
-            break;
-    }
+    for(int i=0; i<dLength; i++)
+        d[i] = dString[i] - '0';
+    
+    mergeSort(d, 0, dLength-1);
 }
 
 // 일반적인 BFS 코드
 QUEUE * bfs(int start){
     QUEUE * queue = createQueue();
-    char store[1000];
-    pushQueue(queue, start, 0, store, 0);
+    pushQueue(queue, start, 0);
     discovered[start] = 1;
     distance[start] = 0;
     
-    int pop, popSum, storeLen;
+    int pop, popSum;
     while(queue->count != 0){
-        NODE * popNode = popQueue(queue);
-        pop = popNode->index;
-        popSum = popNode->sum;
-        strcpy(store, popNode->store);
-        storeLen = popNode->storeLen;
-        free(popNode);
+        NODE * ptr = popQueue(queue);
+        pop = ptr->index;
+        popSum = ptr->sum;
+        free(ptr);
         
-        // printf("%d %d\n", pop, popSum);
-        
-        if(popSum == -1)
-            Bvisited[pop] = 1;
-        else
-            visited[pop] = 1;
+        visited[pop] = 1;
         
         for(int i=0; i<dLength; i++){
             int there = ((pop*10) + d[i]) % n;
-            int isBig;
+            int thereSum;
             
-            if(popSum == -1)
-                isBig = 1;
-            else
-                isBig = ((popSum*10 + d[i]) >= n+m);
-            
-            if(isBig){
-                if(Bvisited[there] == 1 || Bdiscovered[there] == 1)
-                    continue;
-            }else{
-                if(visited[there] == 1 || discovered[there] == 1)
-                    continue;
+            if(pop >= n || (popSum*10 + d[i]) >= n+m){
+                there += n;
+                thereSum = -1;
             }
+            else
+                thereSum = popSum*10 + d[i];
+            
+            if(visited[there] == 1 || discovered[there] == 1)
+                continue;
 
-            if(isBig && popSum == -1)
-                Bdistance[there] = Bdistance[pop] + 1;
-            else if(isBig && popSum != -1)
-                Bdistance[there] = distance[pop] + 1;
-            else
-                distance[there] = distance[pop] + 1;
+            distance[there] = distance[pop] + 1;
+            discovered[there] = 1;
+            pushQueue(queue, there, thereSum);
             
-            store[storeLen] = '0' + d[i];
-            if(isBig){
-                Bdiscovered[there] = 1;
-                pushQueue(queue, there, -1, store, storeLen+1);
-            }else{
-                discovered[there] = 1;
-                pushQueue(queue, there, popSum*10 + d[i], store, storeLen+1);
-            }
+            parent[there] = pop;
+            choice[there] = d[i];
         }
         
-        if(pop == m && popSum == -1){
+        if(pop == n+m){
+            int ret = pop;
+            int cnt = 0;
+            while(ret != 0){
+                string[cnt++] = choice[ret] + '0';
+                ret = parent[ret];
+            }
+            
+            for(int i=cnt-1; i>-1; i--)
+                printf("%c", string[i]);
+            
             answer = 1;
-            for(int i=0; i<storeLen; i++)
-                printf("%c", store[i]);
             break;
         }
     }
@@ -213,19 +194,18 @@ int main() {
     
     for(int i=0; i<caseNum; i++){
         memset(discovered, -1, sizeof(discovered));
-        memset(Bdiscovered, -1, sizeof(discovered));
         memset(visited, -1, sizeof(visited));
-        memset(Bvisited, -1, sizeof(visited));
         memset(distance, -1, sizeof(distance));
-        memset(Bdistance, -1, sizeof(distance));
+        
+        memset(choice, -1, sizeof(choice));
+        memset(parent, -1, sizeof(parent));
         
         dLength = 0; answer = 0;
         
-        int dNum;
-        scanf("%d%d%d", &dNum, &n, &m);
+        char dString[10];
+        scanf("%s%d%d", dString, &n, &m);
         
-        changeList(dNum);
-        mergeSort(d, 0, dLength-1);
+        changeList(dString); 
         QUEUE * queue = bfs(0);
         free(queue);
         
@@ -235,5 +215,5 @@ int main() {
             printf("\n");
     }
 
-	return 0;
+    return 0;
 }
