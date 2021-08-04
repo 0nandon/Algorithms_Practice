@@ -14,51 +14,46 @@ double distance[10000];
 int n, m;
 
 void swap(NODE arr[], int index1, int index2){
-	NODE temp = arr[index1];
-	arr[index1] = arr[index2];
-	arr[index2] = temp;
+    NODE temp = arr[index1];
+    arr[index1] = arr[index2];
+    arr[index2] = temp;
 }
 
 void insertMinHeap(NODE arr[], int length, NODE data){
-	arr[length] = data;
+    arr[length] = data;
 	
-	while(1){
-		if(length == 0) break;
-		if(arr[(length-1)/2].distance > data.distance)
-			swap(arr, length, (length-1)/2);
-		else break;
-		length = (length-1)/2;
-	}
+    while(1){
+        if(length == 0) break;
+	if(arr[(length-1)/2].distance > data.distance)
+	    swap(arr, length, (length-1)/2);
+	else break;
+	length = (length-1)/2;
+    }
 }
 
 NODE deleteMinHeap(NODE arr[], int length){
     NODE ret = arr[0];
-	arr[0] = arr[length-1];
-	int index = 0;
+    arr[0] = arr[length-1];
+    int index = 0;
 	
-	while(1){
-		if((index+1)*2 <= length-2 && (index+1)*2-1 <= length-2){
-		    if(arr[index].distance > arr[(index+1)*2].distance || arr[index].distance > arr[(index+1)*2-1].distance){
-		        if(arr[(index+1)*2].distance > arr[(index+1)*2-1].distance){
-					swap(arr, index, (index+1)*2-1);
-			        index = (index+1)*2-1;
-		        }
-		        else{
-					swap(arr, index, (index+1)*2);
-			        index = (index+1)*2;
-		        }
-		    }
-			else break;
+    while(1){
+        if((index+1)*2 <= length-2 && (index+1)*2-1 <= length-2){
+            if(arr[index].distance > arr[(index+1)*2].distance || arr[index].distance > arr[(index+1)*2-1].distance){
+	        if(arr[(index+1)*2].distance > arr[(index+1)*2-1].distance){
+		    swap(arr, index, (index+1)*2-1);
+	            index = (index+1)*2-1;
+		}else{
+		    swap(arr, index, (index+1)*2);
+	            index = (index+1)*2;
 		}
-		else if((index+1)*2-1 == length-2){
-			if(arr[index].distance > arr[(index+1)*2-1].distance){
-				swap(arr, index,(index+1)*2-1);
-			    index = (index+1)*2-1;
-			}
-			else break;
-		}
-		else break;
-	}
+	    }else break;
+	}else if((index+1)*2-1 == length-2){
+	    if(arr[index].distance > arr[(index+1)*2-1].distance){
+	        swap(arr, index,(index+1)*2-1);
+	        index = (index+1)*2-1;
+	    }else break;
+        }else break;
+    }
     
     return ret;
 }
@@ -125,5 +120,5 @@ int main() {
     for(int i=0; i<caseNum; i++)
         printf("%.10lf\n", pow(10.0, answer[i]));
     
-	  return 0;
+    return 0;
 }
