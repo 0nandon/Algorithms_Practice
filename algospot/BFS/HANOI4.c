@@ -175,5 +175,5 @@ int main() {
     for(int i=0; i<caseNum; i++)
         printf("%d\n", answer[i]);
     
-	  return 0;
+    return 0;
 }
