@@ -58,7 +58,7 @@ NODE deleteMinHeap(NODE arr[], int length){
     return ret;
 }
 
-float dijkstra(int start){
+double dijkstra(int start){
     NODE nodeList[10000];
     NODE newNode;
     newNode.index = start;
