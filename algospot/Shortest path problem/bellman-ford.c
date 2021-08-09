@@ -62,5 +62,5 @@ int main() {
     else
         printf("IMPOSSIBLE");
         
-	return 0;
+    return 0;
 }
