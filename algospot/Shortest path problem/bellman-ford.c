@@ -30,22 +30,24 @@ int bellmanFord(int start){
         distance[i] = INF;
     distance[0] = 0;
     
-    int check = 0;
+    int check = 1;
     for(int i=0; i<VERTEXNUM; i++){
         for(int j=0; j<VERTEXNUM; j++){
             for(int a=0; a<VERTEXNUM; a++){
                 if(graph[j][a] == 0)
                     continue;
                 
-                if(distance[a] > distance[j] + graph[j][a])
+                if(distance[a] > distance[j] + graph[j][a]){
                     distance[a] = distance[j] + graph[j][a];
-                else
-                    check = 1;
+                    
+                    if(i == VERTEXNUM-1)
+                        check = -1;
+                }
             }
         }     
     }
     
-    if(check)
+    if(check == -1)
         return -1;
     else
         return 1;
@@ -60,5 +62,5 @@ int main() {
     else
         printf("IMPOSSIBLE");
         
-    return 0;
+	return 0;
 }
