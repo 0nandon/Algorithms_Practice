@@ -18,37 +18,37 @@ int min(int num1, int num2){
 }
 
 void merge(DRUNKEN arr[], int start, int half, int end){
-	DRUNKEN temp[end-start+1];
-	for(int i = 0; i<end-start+1; i++)
-		  temp[i] = arr[start+i];
+    DRUNKEN temp[end-start+1];
+    for(int i = 0; i<end-start+1; i++)
+    	temp[i] = arr[start+i];
 	
-	int cnt = 0, left = 0, right = 0;
-	while(left < half+1 && right < end-start-half){
-		  if(temp[left].drunken > temp[half+1+right].drunken){
-			    arr[start+cnt] = temp[half+1+right]; 
-          right++; cnt++;
-      }else{ 
-          arr[start+cnt] = temp[left]; 
-          left++; cnt++;
-      }
-	}
+    int cnt = 0, left = 0, right = 0;
+    while(left < half+1 && right < end-start-half){
+        if(temp[left].drunken > temp[half+1+right].drunken){
+	    arr[start+cnt] = temp[half+1+right]; 
+            right++; cnt++;
+        }else{ 
+            arr[start+cnt] = temp[left]; 
+            left++; cnt++;
+        }
+    }
 	
-	if(left == half+1)
-		  for(int i = 0; i<end-start-half-right; i++)
-			    arr[start+cnt+i] = temp[half+1+right+i];
-	else if(right == end-start-half)
-		  for(int i = 0; i<half+1-left; i++)
-			    arr[start+cnt+i] = temp[left+i];
+    if(left == half+1)
+        for(int i = 0; i<end-start-half-right; i++)
+	    arr[start+cnt+i] = temp[half+1+right+i];
+    else if(right == end-start-half)
+	for(int i = 0; i<half+1-left; i++)
+            arr[start+cnt+i] = temp[left+i];
 }
 
 // 병합정렬 구현 소스
 void mergeSort(DRUNKEN arr[], int start, int end){
-    if(start != end){
-	      int half = (end-start)/2;
-	      mergeSort(arr, start, start+half);
+    if(start != end){  
+        int half = (end-start)/2;
+	mergeSort(arr, start, start+half);
         mergeSort(arr, start+half+1, end);
         merge(arr, start, half, end);
-	  }
+    }
 }
 
 // 플로이드 알고리즘
