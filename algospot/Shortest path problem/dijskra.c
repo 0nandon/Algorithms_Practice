@@ -84,7 +84,7 @@ void dijkstra(int start){
             if(graph[pop.index][i] == 0)
                 continue;
             
-            if(distance [i] > distance[pop.index] + graph[pop.index][i] || distance[i] == -1){
+            if(distance[i] > distance[pop.index] + graph[pop.index][i] || distance[i] == -1){
                 NODE pushNode;
                 pushNode.distance = distance[pop.index] + graph[pop.index][i];
                 pushNode.index = i;
