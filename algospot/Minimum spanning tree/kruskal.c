@@ -36,7 +36,7 @@ void merge(NODE arr[], int start, int half, int end){
     int cnt = 0, left = 0, right = 0;
     while(left < half+1 && right < end-start-half){
         if(temp[left].distance > temp[half+1+right].distance){
-	        arr[start+cnt] = temp[half+1+right]; 
+	    arr[start+cnt] = temp[half+1+right]; 
             right++; cnt++;
         }else{ 
             arr[start+cnt] = temp[left]; 
@@ -46,9 +46,9 @@ void merge(NODE arr[], int start, int half, int end){
 	
     if(left == half+1)
         for(int i = 0; i<end-start-half-right; i++)
-	        arr[start+cnt+i] = temp[half+1+right+i];
+	    arr[start+cnt+i] = temp[half+1+right+i];
     else if(right == end-start-half)
-	    for(int i = 0; i<half+1-left; i++)
+	for(int i = 0; i<half+1-left; i++)
             arr[start+cnt+i] = temp[left+i];
 }
 
@@ -56,7 +56,7 @@ void merge(NODE arr[], int start, int half, int end){
 void mergeSort(NODE arr[], int start, int end){
     if(start != end){  
         int half = (end-start)/2;
-	    mergeSort(arr, start, start+half);
+	mergeSort(arr, start, start+half);
         mergeSort(arr, start+half+1, end);
         merge(arr, start, half, end);
     }
