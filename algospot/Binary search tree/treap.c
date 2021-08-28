@@ -25,6 +25,7 @@ NODE * createNode(int data){
     return newNode;
 }
 
+// treap에서 노드를 삽입할 때 필요
 NODE * swap(NODE * root, NODE * child, int isLeft){
     if(isLeft){
         root->left = child->right;
@@ -58,6 +59,7 @@ NODE * insertNode(NODE * root, int data){
     return newNode;
 }
 
+// treap에서 노드를 삭제할 때 필요
 NODE * merge(NODE * left, NODE * right){
     if(left == NULL)
         return right;
