@@ -92,17 +92,17 @@ NODE * rejectNode(NODE * root, int data){
 
 static int num = -2;
 void printTree(NODE *root) {
-	  num++;
-	  if (root != NULL) {
-		    printTree(root->right);
-		    for (int i = 0; i < num; i++) {
-			      printf("\t");
-		    }
-		    printf("(%d, %d)\n", root->data, root->priority);
-		    num--;
-		    printTree(root->left);
-		    num--;
-	  }
+    num++;
+    if (root != NULL) {
+	printTree(root->right);
+	for (int i = 0; i < num; i++) 
+	    printf("\t");
+		 
+        printf("(%d, %d)\n", root->data, root->priority);
+	num--;
+	printTree(root->left);
+        num--;
+    }
 };
 
 int main(){
