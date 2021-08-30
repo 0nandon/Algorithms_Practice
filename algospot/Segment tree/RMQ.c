@@ -72,5 +72,5 @@ int main(){
     
     free(rangeMin);
     
-	  return 0;
+    return 0;
 }
