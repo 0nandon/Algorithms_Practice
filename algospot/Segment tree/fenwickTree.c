@@ -32,6 +32,7 @@ void fenwickAdd(int pos, int val){
 
 int main(){
     int input[N];
+    init();
     for(int i=0; i<N; i++)
         input[i] = i;
     
