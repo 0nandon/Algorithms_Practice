@@ -13,27 +13,27 @@ int sort[MAX];
 
 //병합 정렬 소스
 void merge(int arr[], int start, int half, int end){
-	int temp[end-start+1];
-	for(int i = 0; i<end-start+1; i++)
-	    temp[i] = arr[start+i];
+    int temp[end-start+1];
+    for(int i = 0; i<end-start+1; i++)
+        temp[i] = arr[start+i];
 	
-	int cnt = 0, left = 0, right = 0;
-	while(left < half+1 && right < end-start-half){
-	    if(temp[left] > temp[half+1+right]){
-	        arr[start+cnt] = temp[half+1+right]; 
-                right++; cnt++;
-            }else{
-                arr[start+cnt] = temp[left]; 
-                left++; cnt++;
-            }
-	}
+    int cnt = 0, left = 0, right = 0;
+    while(left < half+1 && right < end-start-half){
+        if(temp[left] > temp[half+1+right]){
+	    arr[start+cnt] = temp[half+1+right]; 
+            right++; cnt++;
+        }else{
+            arr[start+cnt] = temp[left]; 
+            left++; cnt++;
+        }
+    }
 	
-	if(left == half+1)
-	    for(int i = 0; i<end-start-half-right; i++)
-		arr[start+cnt+i] = temp[half+1+right+i];
-	else if(right == end-start-half)
-	    for(int i = 0; i<half+1-left; i++)
-		arr[start+cnt+i] = temp[left+i];
+    if(left == half+1)
+	for(int i = 0; i<end-start-half-right; i++)
+            arr[start+cnt+i] = temp[half+1+right+i];
+    else if(right == end-start-half)
+	for(int i = 0; i<half+1-left; i++)
+	    arr[start+cnt+i] = temp[left+i];
 }
 
 // 병합정렬 구현 소스
