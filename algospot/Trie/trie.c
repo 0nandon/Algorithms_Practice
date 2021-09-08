@@ -60,5 +60,5 @@ int main(){
     if(isFind->isTerminal)
         printf("Find!");
     
-	  return 0;
+    return 0;
 }
