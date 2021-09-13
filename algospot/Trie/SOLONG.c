@@ -11,7 +11,6 @@ typedef struct input_t{
 }INPUT;
 
 typedef struct node_t{
-    int isTerminal;
     char * recommend;
     struct node_t * child[ALPHABETS];
 }NODE;
@@ -47,7 +46,6 @@ NODE * createNode(){
     NODE * newNode;
     newNode = (NODE*)malloc(sizeof(NODE));
     
-    newNode->isTerminal = 0;
     newNode->recommend = NULL;
     for(int i=0; i<ALPHABETS; i++)
         newNode->child[i] = NULL;
@@ -98,7 +96,7 @@ void merge(int start, int half, int end){
     int cnt = 0, left = 0, right = 0;
     while(left < half+1 && right < end-start-half){
         if(temp[left].priority < temp[half+1+right].priority){
-	        inputs[start+cnt] = temp[half+1+right]; 
+	    inputs[start+cnt] = temp[half+1+right]; 
             right++;
         }else if(temp[left].priority > temp[half+1+right].priority){
             inputs[start+cnt] = temp[left]; 
@@ -113,18 +111,18 @@ void merge(int start, int half, int end){
     }
 	
     if(left == half+1)
-	    for(int i = 0; i<end-start-half-right; i++)
+	for(int i = 0; i<end-start-half-right; i++)
             inputs[start+cnt+i] = temp[half+1+right+i];
     else if(right == end-start-half)
-	    for(int i = 0; i<half+1-left; i++)
-	        inputs[start+cnt+i] = temp[left+i];
+	for(int i = 0; i<half+1-left; i++)
+	    inputs[start+cnt+i] = temp[left+i];
 }
 
 // 병합정렬 구현 소스
 void mergeSort(int start, int end){
     if(start != end){
-	    int half = (end-start)/2;
-	    mergeSort(start, start+half);
+	int half = (end-start)/2;
+	mergeSort(start, start+half);
         mergeSort(start+half+1, end);
         merge(start, half, end);
     }
