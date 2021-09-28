@@ -19,35 +19,35 @@ int compare(int index1, int index2){
 void merge(int start, int half, int end){
 	int temp[end-start+1];
 	for(int i = 0; i<end-start+1; i++)
-		temp[i] = sort[start+i];
+	    temp[i] = sort[start+i];
 	
 	int cnt = 0, left = 0, right = 0;
 	while(left < half+1 && right < end-start-half){
-		if(compare(temp[left], temp[half+1+right])){
-			sort[start+cnt] = temp[half+1+right]; 
-            right++; cnt++;
-        }else{ 
-            sort[start+cnt] = temp[left]; 
-            left++; cnt++;	
-        }
+	    if(compare(temp[left], temp[half+1+right])){
+	        sort[start+cnt] = temp[half+1+right]; 
+                right++; cnt++;
+            }else{ 
+                sort[start+cnt] = temp[left]; 
+                left++; cnt++;	
+            }
 	}
 	
 	if(left == half+1)
-		for(int i = 0; i<end-start-half-right; i++)
-			sort[start+cnt+i] = temp[half+1+right+i];
+	    for(int i = 0; i<end-start-half-right; i++)
+	        sort[start+cnt+i] = temp[half+1+right+i];
 	else if(right == end-start-half)
-		for(int i = 0; i<half+1-left; i++)
-			sort[start+cnt+i] = temp[left+i];
+	    for(int i = 0; i<half+1-left; i++)
+	        sort[start+cnt+i] = temp[left+i];
 }
 
 // 병합정렬 구현 소스
 void mergeSort(int start, int end){
     if(start != end){
-	    int half = (end-start)/2;
-	    mergeSort(start, start+half);
+        int half = (end-start)/2;
+	mergeSort(start, start+half);
         mergeSort(start+half+1, end);
         merge(start, half, end);
-	}
+    }
 }
 
 void makeGroup(){
@@ -101,5 +101,5 @@ int main(){
     char * N = "ssi";
     printf("부분 문자열 'ssi'는 %d index에 등장합니다.", find(0, MAXN-1, N, strlen(N)));
     
-	return 0;
+    return 0;
 }
