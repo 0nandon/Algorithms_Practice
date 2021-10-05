@@ -159,7 +159,7 @@ void destroyTrie(NODE * root){
     }
 }
 
-// 아호-코라이 식으로 문자열 검색
+// 아호-코라이식으로 문자열 검색
 void ahoCorasick(char * N, NODE * trie){
     int len = strlen(N);
     NODE * nowNode = trie;
